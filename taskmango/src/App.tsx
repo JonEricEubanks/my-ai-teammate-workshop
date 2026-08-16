@@ -5,6 +5,7 @@ import { AddTaskForm } from './components/AddTaskForm';
 import { TaskFilter } from './components/TaskFilter';
 import { TaskList } from './components/TaskList';
 import { maybeCelebrate } from './mangoRain';
+import { getTaskCounts } from './components/TaskFilter';
 
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>(loadTasks);
@@ -31,6 +32,7 @@ export default function App() {
   const visibleTasks = tasks.filter((t) =>
     filter === 'all' ? true : filter === 'active' ? !t.done : t.done,
   );
+  const counts = getTaskCounts(tasks);
 
   useEffect(() => {
     maybeCelebrate(tasks);
@@ -41,7 +43,7 @@ export default function App() {
       <h1>🥭 TaskMango</h1>
       <p className="tagline">Small tasks. Juicy productivity.</p>
       <AddTaskForm onAdd={addTask} />
-      <TaskFilter current={filter} onChange={setFilter} />
+      <TaskFilter current={filter} onChange={setFilter} counts={counts} />
       <TaskList tasks={visibleTasks} onToggle={toggleTask} onDelete={deleteTask} />
     </main>
   );
