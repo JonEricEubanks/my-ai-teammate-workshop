@@ -1,17 +1,32 @@
-import type { Filter } from '../types';
+import type { Filter, Task } from '../types';
+
+export interface TaskFilterCounts {
+  all: number;
+  active: number;
+  completed: number;
+}
 
 interface Props {
   current: Filter;
   onChange: (filter: Filter) => void;
+  counts: TaskFilterCounts;
 }
 
-const FILTERS: { value: Filter; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'completed', label: 'Completed' },
+export function getTaskCounts(tasks: Task[]): TaskFilterCounts {
+  return {
+    all: tasks.length,
+    active: tasks.filter((task) => !task.done).length,
+    completed: tasks.filter((task) => task.done).length,
+  };
+}
+
+const FILTERS: { value: Filter; label: string; key: keyof TaskFilterCounts }[] = [
+  { value: 'all', label: 'All', key: 'all' },
+  { value: 'active', label: 'Active', key: 'active' },
+  { value: 'completed', label: 'Completed', key: 'completed' },
 ];
 
-export function TaskFilter({ current, onChange }: Props) {
+export function TaskFilter({ current, onChange, counts }: Props) {
   return (
     <nav className="filter-bar" aria-label="Task filters">
       {FILTERS.map((f) => (
@@ -20,7 +35,7 @@ export function TaskFilter({ current, onChange }: Props) {
           className={current === f.value ? 'active' : ''}
           onClick={() => onChange(f.value)}
         >
-          {f.label}
+          {`${f.label} (${counts[f.key]})`}
         </button>
       ))}
     </nav>
