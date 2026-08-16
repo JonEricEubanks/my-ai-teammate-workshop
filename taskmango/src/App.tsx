@@ -23,10 +23,8 @@ export default function App() {
     setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
   };
 
-  // NOTE: deletes by position in the *visible* (filtered) list.
-  // This is seeded issue #2 — do not fix it yourself; delegate it. 🥭
-  const deleteTask = (visibleIndex: number) => {
-    setTasks(tasks.filter((_, i) => i !== visibleIndex));
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   const visibleTasks = tasks.filter((t) =>
