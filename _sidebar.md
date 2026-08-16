@@ -1,0 +1,12 @@
+- [Home](README.md)
+- **Get Started**
+  - [:wrench: 00 · Environment setup](setup/00-environment.md)
+- **Modules**
+  - [:users: 01 · Meet Your AI Teammate](modules/01-meet-your-ai-teammate/README.md)
+  - [:clipboard: 02 · Delegate Your First Task](modules/02-delegate-a-task/README.md)
+  - [:star: 03 · Be the Tech Lead](modules/03-become-the-tech-lead/README.md)
+  - [:shield: 04 · Security on Autopilot](modules/04-security-on-autopilot/README.md)
+  - [:cpu: 05 · Build a Specialist Agent](modules/05-customize-your-agent/README.md)
+- **Finish**
+  - [:trophy: Capstone](capstone/README.md)
+  - [:bug: TaskMango seeded issues](taskmango/docs/seeded-issues.md)

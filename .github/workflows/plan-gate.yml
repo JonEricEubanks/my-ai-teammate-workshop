@@ -1,0 +1,31 @@
+name: 🚪 Plan Gate
+
+# Governance as code: a PR without a filled-in plan can't merge (once this
+# check is made required on main — Module 06 walks you through that).
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  plan-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body ?? '';
+            // The template's unfilled marker: "**Goal:**" with nothing after it.
+            const planMissing = /\*\*Goal:\*\*\s*($|\r?\n\s*-|\r?\n\r?\n)/.test(body) || body.trim() === '';
+            if (planMissing) {
+              core.setFailed(
+                'This PR has no plan. Fill in the "Plan" section of the description ' +
+                '(Goal / Scope / Steps / Success criteria). Every change — human or ' +
+                'agent — starts with reviewable intent. See Module 06.'
+              );
+            } else {
+              core.info('Plan present. Gate passed.');
+            }

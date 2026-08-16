@@ -1,0 +1,103 @@
+/* ============================================================
+   Progress widget, completion checkmarks, "Up next" cards
+   ============================================================ */
+
+/* ---------- sidebar progress bar ---------- */
+.at-progress {
+  padding: 0.8rem 1rem 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.at-progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6f9a91;
+  margin-bottom: 0.45rem;
+}
+.at-progress-count {
+  color: var(--teal, #55d8c7);
+  font-variant-numeric: tabular-nums;
+}
+.at-progress.complete .at-progress-count {
+  color: #ffd9a0;
+}
+.at-progress-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.at-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--mango, #ff9f1c), #55d8c7);
+  transition: width 0.6s var(--ease-out, ease);
+}
+
+/* ---------- completion checkmarks in the sidebar ---------- */
+.at-check {
+  display: inline-flex;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: auto;
+  color: #55d8c7;
+  flex: none;
+}
+.at-check svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- "Up next" card at the end of a module ---------- */
+.at-up-next {
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--r-md, 14px);
+  background: linear-gradient(135deg, #0a332e, #10443d);
+  border: 1px solid rgba(85, 216, 199, 0.25);
+  box-shadow: var(--shadow-md, 0 4px 20px rgba(6, 36, 33, 0.12));
+}
+.at-up-next-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #55d8c7;
+  margin-bottom: 0.35rem;
+}
+.at-up-next-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #ffffff !important;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none !important;
+  background: none !important;
+  padding-bottom: 0;
+}
+.at-up-next-link .at-arrow {
+  color: var(--mango, #ff9f1c);
+  font-weight: 800;
+  transition: transform 0.2s var(--ease-out, ease);
+}
+.at-up-next-link:hover .at-arrow {
+  transform: translateX(5px);
+}
+.at-finish {
+  background: linear-gradient(135deg, #10443d, #17594f);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .at-progress-fill,
+  .at-up-next-link .at-arrow {
+    transition: none;
+  }
+}

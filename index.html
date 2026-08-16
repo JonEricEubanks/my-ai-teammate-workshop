@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Teammate 101 — Delegate Like a Tech Lead</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="description"
+      content="A hands-on workshop for learning to delegate work to GitHub Copilot's Coding Agent."
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ffb347'/%3E%3Cstop offset='1' stop-color='%23ff7b1c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M24 4c8 0 15 6 16.5 14.5C42 30 34 42 24 44 14 42 6 30 7.5 18.5 9 10 16 4 24 4Z' fill='url(%23g)'/%3E%3Cpath d='M24 6c2-3 5-4 8-3-1 3-4 4-8 3Z' fill='%233f9d4f'/%3E%3C/svg%3E"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+    />
+    <link rel="stylesheet" href="assets/design.css?v=7" />
+    <link rel="stylesheet" href="assets/theme.css?v=6" />
+    <link rel="stylesheet" href="assets/sidebar.css?v=6" />
+    <link rel="stylesheet" href="assets/cover.css?v=6" />
+    <link rel="stylesheet" href="assets/progress.css?v=6" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      window.$docsify = {
+        name: '<svg class="ti ti-lg"><use href="assets/icons.svg#i-logo"/></svg> AI Teammate 101',
+        repo: "https://github.com/JonEricEubanks/ai-teammate-101",
+        loadSidebar: true,
+        coverpage: true,
+        auto2top: true,
+        search: "auto",
+        noEmoji: true,
+        copyCode: {
+          buttonText: "Copy",
+          errorText: "Error",
+          successText: "Copied",
+        },
+        plugins: [
+          function (hook) {
+            // The markdown uses site-absolute asset paths like
+            // "/ai-teammate-101/assets/…". On a host that already serves the
+            // site under that prefix (GitHub Pages) this resolves correctly,
+            // but a leading "/" would break on a plain local static server
+            // (drops the /ai-teammate-101/ prefix). Rewrite to the actual
+            // site base so screenshots/diagrams load in both environments.
+            const base = location.pathname.replace(/[^/]*$/, ""); // e.g. /ai-teammate-101/
+            hook.beforeEach((content) =>
+              content.replace(/(src=["'])\/ai-teammate-101\//g, "$1" + base),
+            );
+          },
+        ],
+      };
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+    <script src="assets/progress.js?v=6"></script>
+    <script>
+      // Inline the SVG icon sprite, then replace :name: shortcodes in the
+      // rendered DOM. Post-processing (not beforeEach) so the coverpage and
+      // sidebar — which aren't re-rendered per route — get icons too.
+      fetch("assets/icons.svg")
+        .then((r) => r.text())
+        .then((svg) => {
+          const holder = document.createElement("div");
+          holder.style.display = "none";
+          holder.innerHTML = svg;
+          document.body.prepend(holder);
+
+          const ICON_RE = /:([a-z-]+):/g;
+          const swap = (root) => {
+            const walker = document.createTreeWalker(
+              root,
+              NodeFilter.SHOW_TEXT,
+            );
+            const targets = [];
+            let n;
+            while ((n = walker.nextNode())) {
+              ICON_RE.lastIndex = 0; // /g regex: reset before every test
+              if (ICON_RE.test(n.nodeValue)) targets.push(n);
+            }
+            ICON_RE.lastIndex = 0;
+            for (const t of targets) {
+              const frag = document.createDocumentFragment();
+              const parts = t.nodeValue.split(ICON_RE);
+              let swapped = false;
+              for (let i = 0; i < parts.length; i++) {
+                if (i % 2 === 0) {
+                  if (parts[i]) frag.append(document.createTextNode(parts[i]));
+                } else {
+                  const id = "i-" + parts[i];
+                  if (holder.querySelector("#" + id)) {
+                    const s = document.createElementNS(
+                      "http://www.w3.org/2000/svg",
+                      "svg",
+                    );
+                    s.setAttribute("class", "ti");
+                    s.innerHTML = `<use href="#${id}"/>`;
+                    frag.append(s);
+                    swapped = true;
+                  } else {
+                    frag.append(document.createTextNode(":" + parts[i] + ":"));
+                  }
+                }
+              }
+              // only touch the DOM when a real icon was swapped — keeps the
+              // MutationObserver below from looping on unknown shortcodes
+              if (swapped && t.parentNode) t.parentNode.replaceChild(frag, t);
+            }
+          };
+
+          const run = () => {
+            // body covers the coverpage (sibling of main), main, and sidebar.
+            // Skip the hidden sprite holder to avoid corrupting it.
+            swap(document.body);
+            // strip leftover shortcodes from title/alt attributes + tab title
+            document.querySelectorAll("[title],[alt]").forEach((el) => {
+              ["title", "alt"].forEach((attr) => {
+                const v = el.getAttribute(attr);
+                if (v && ICON_RE.test(v)) {
+                  ICON_RE.lastIndex = 0;
+                  el.setAttribute(
+                    attr,
+                    v
+                      .replace(ICON_RE, "")
+                      .replace(/\s{2,}/g, " ")
+                      .trim(),
+                  );
+                }
+                ICON_RE.lastIndex = 0;
+              });
+            });
+            if (ICON_RE.test(document.title)) {
+              ICON_RE.lastIndex = 0;
+              document.title = document.title
+                .replace(ICON_RE, "")
+                .replace(/\s{2,}/g, " ")
+                .trim();
+            }
+            ICON_RE.lastIndex = 0;
+          };
+
+          // Docsify rewrites document.title from the sidebar link (which holds
+          // the shortcode) AFTER doneEach — watch and self-correct on every change.
+          const cleanTitle = () => {
+            if (ICON_RE.test(document.title)) {
+              ICON_RE.lastIndex = 0;
+              document.title = document.title
+                .replace(ICON_RE, "")
+                .replace(/\s{2,}/g, " ")
+                .trim();
+            }
+            ICON_RE.lastIndex = 0;
+          };
+          const titleEl = document.querySelector("head > title");
+          if (titleEl)
+            new MutationObserver(cleanTitle).observe(titleEl, {
+              childList: true,
+              characterData: true,
+              subtree: true,
+            });
+
+          window.$docsify.plugins = (window.$docsify.plugins || []).concat(
+            (hook) => hook.doneEach(run),
+          );
+          // also run once after initial load (coverpage + sidebar first paint).
+          // Attach via setTimeout, not the load event — this fetch().then() can
+          // resolve after window.load has already fired, which would never run.
+          setTimeout(run, 300);
+          // Docsify re-renders the sidebar asynchronously (after doneEach),
+          // which can restore raw :icon: text — re-run the swap on app DOM
+          // changes. The `swapped` guard + timer debounce prevent loops.
+          // NOTE: setTimeout, not requestAnimationFrame — rAF never fires in
+          // hidden/backgrounded tabs, leaving raw shortcodes stuck on screen.
+          let scheduled = false;
+          new MutationObserver(() => {
+            if (scheduled) return;
+            scheduled = true;
+            setTimeout(() => {
+              scheduled = false;
+              run();
+            }, 50);
+            // NOTE: Docsify replaces #app entirely, so observe document.body.
+          }).observe(document.body, {
+            childList: true,
+            subtree: true,
+          });
+        })
+        .catch(() => {});
+
+      // Click-to-zoom lightbox for inline screenshots. Works on any
+      // <img class="shot"> in the rendered markdown, including ones added
+      // later by SPA navigation (event delegation on document).
+      const overlay = document.createElement("div");
+      overlay.id = "shot-lightbox";
+      overlay.setAttribute("role", "dialog");
+      overlay.setAttribute("aria-modal", "true");
+      overlay.innerHTML = '<img alt="" /><p>Click anywhere to close</p>';
+      document.body.appendChild(overlay);
+      const overlayImg = overlay.querySelector("img");
+      const closeLightbox = () => overlay.classList.remove("open");
+      overlay.addEventListener("click", closeLightbox);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLightbox();
+      });
+      document.addEventListener("click", (e) => {
+        const img = e.target.closest && e.target.closest("img.shot");
+        if (!img) return;
+        overlayImg.src = img.src;
+        overlayImg.alt = img.alt || "";
+        overlay.classList.add("open");
+      });
+
+      // Interactive task-list checkboxes — Docsify renders them disabled.
+      // State is persisted in localStorage keyed by route + checkbox index.
+      (() => {
+        const STORE = "at101-checks-v1";
+        const load = () => { try { return JSON.parse(localStorage.getItem(STORE) || "{}"); } catch { return {}; } };
+        const save = (data) => localStorage.setItem(STORE, JSON.stringify(data));
+
+        const activate = () => {
+          const route = location.hash || "#/";
+          const data = load();
+          const boxes = document.querySelectorAll('.content input[type="checkbox"]');
+          boxes.forEach((cb, i) => {
+            cb.removeAttribute("disabled");
+            const key = route + ":" + i;
+            if (data[key] !== undefined) cb.checked = data[key];
+            // replace with a fresh clone to drop any stale listeners
+            const fresh = cb.cloneNode(true);
+            fresh.addEventListener("change", () => {
+              const d = load();
+              d[route + ":" + i] = fresh.checked;
+              save(d);
+            });
+            cb.replaceWith(fresh);
+          });
+        };
+
+        window.$docsify.plugins = (window.$docsify.plugins || []).concat(
+          (hook) => hook.doneEach(activate),
+        );
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+/* 🥭 AI Teammate 101 — custom theme
+   Palette: deep teal surfaces with #55d8c7 gradients, mango orange accent. */
+
+:root {
+  --mango: #ff9f1c;
+  --mango-deep: #ff7b1c;
+  --teal: #55d8c7;
+  --teal-deep: #1fae9c;
+  --deep: #10443d;
+  --deep-soft: #17594f;
+  --ink: #17262b;
+  --cream: #f6faf8;
+  --mono: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+}
+
+/* ---------- links ---------- */
+.markdown-section a {
+  color: var(--mango-deep);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.markdown-section a:hover {
+  border-bottom-color: var(--mango);
+  text-decoration: none;
+}
+
+/* ---------- headers ---------- */
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.markdown-section h1 {
+  background: linear-gradient(90deg, var(--teal-deep), var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.markdown-section h2 {
+  border-bottom: 2px solid #d8e8e3;
+  padding-bottom: 0.3em;
+}
+
+/* ---------- tables → soft cards ---------- */
+.markdown-section table {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(6, 36, 33, 0.08);
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+.markdown-section th {
+  background: var(--deep);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.7em 1em;
+}
+.markdown-section td {
+  padding: 0.6em 1em;
+  border-bottom: 1px solid #e2ebe7;
+}
+.markdown-section tr:nth-child(even) td {
+  background: #f2f8f6;
+}
+.markdown-section tr:hover td {
+  background: #e9f7f3;
+  transition: background 0.15s ease;
+}
+
+/* ---------- blockquotes → callout cards ---------- */
+.markdown-section blockquote {
+  margin: 1.2em 0;
+  padding: 0.9em 1.2em;
+  background: linear-gradient(135deg, #fff7ea, #eafaf5);
+  border: 1px solid #eee0c2;
+  border-left: 5px solid var(--mango);
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 2px 8px rgba(255, 159, 28, 0.1);
+}
+.markdown-section blockquote p {
+  margin: 0.3em 0;
+}
+
+/* ---------- code ---------- */
+.markdown-section code {
+  font-family: var(--mono);
+  background: #e3f6f1;
+  color: #0c7a6b;
+  border-radius: 5px;
+  padding: 0.15em 0.45em;
+}
+.markdown-section pre {
+  border-radius: 12px;
+  box-shadow: 0 3px 14px rgba(6, 36, 33, 0.12);
+}
+.markdown-section pre > code {
+  background: #062421;
+  color: #d6f4ee;
+  padding: 1.1em 1.2em;
+}
+
+/* ---------- task lists ---------- */
+.markdown-section .task-list-item {
+  list-style: none;
+}
+.markdown-section .task-list-item input[type='checkbox'] {
+  accent-color: var(--mango);
+  transform: scale(1.2);
+  margin-right: 0.4em;
+}
+
+/* ---------- sidebar ---------- */
+.sidebar {
+  background: linear-gradient(180deg, #062421 0%, var(--deep) 60%, #17594f 100%);
+}
+.sidebar,
+.sidebar a {
+  color: #bfe9e1;
+}
+.sidebar ul li a {
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+.sidebar ul li a:hover {
+  color: var(--mango);
+  padding-left: 4px;
+}
+.sidebar ul li.active > a {
+  color: var(--mango);
+  border-right: 3px solid var(--mango);
+  font-weight: 600;
+}
+.sidebar h1 a {
+  color: #fff !important;
+}
+.sidebar-toggle {
+  background: var(--deep);
+}
+.sidebar-toggle span {
+  background: var(--mango);
+}
+
+/* ---------- search ---------- */
+.search input {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.search .matching-post {
+  border-bottom: 1px solid #e2ebe7;
+}
+
+/* ---------- smooth content entry ---------- */
+.markdown-section {
+  animation: fadeSlideIn 0.45s ease;
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- details/summary (spoilers & answers) ---------- */
+.markdown-section details {
+  background: var(--cream);
+  border: 1px solid #d9e8e3;
+  border-radius: 10px;
+  padding: 0.6em 1em;
+  margin: 0.8em 0;
+}
+.markdown-section summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--mango-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-section {
+    animation: none;
+  }
+}

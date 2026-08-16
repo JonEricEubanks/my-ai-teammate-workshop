@@ -1,0 +1,35 @@
+name: 🧪 TaskMango CI
+
+# Real CI for the sample app — when Copilot opens a PR, these checks run on it.
+# That's the point: agent-authored code goes through the same gates as human code.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: read-only by default (Module 06 explains why).
+permissions:
+  contents: read
+
+# Cancel stale runs when a branch updates — Copilot iterates fast.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: taskmango
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: taskmango/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

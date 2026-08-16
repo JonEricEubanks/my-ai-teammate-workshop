@@ -1,0 +1,174 @@
+name: 🏆 Workshop Progress Bot
+
+# The examiner: watches your copy of the workshop and checks off milestones
+# as you complete them — no manual tracking. Finish all six and it awards
+# you a shareable certificate right in your repo.
+
+on:
+  workflow_dispatch: # "Run workflow" button — check my progress now
+  issues:
+    types: [opened, assigned, edited]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, closed, edited, review_requested]
+  push:
+    branches: [main]
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: write
+  security-events: read
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const COPILOT_BOT = 'copilot-swe-agent';
+            const TRACK_TITLE = '🏆 My AI Teammate 101 Progress';
+
+            // --- milestone detection -------------------------------------------------
+
+            // M1: an issue assigned to Copilot. The "Assign to Agent" flow sets the
+            // assignee login to 'Copilot'; older flows use the app slug 'copilot-swe-agent'.
+            // The listForRepo `assignee` filter rejects app logins, so list recent issues
+            // and match the assignee login in code.
+            const allIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner, repo, state: 'all', per_page: 100,
+            });
+            const COPILOT_LOGINS = new Set(['copilot', 'copilot-swe-agent', 'copilot-swe-agent[bot]']);
+            const m1 = allIssues.some(
+              (i) => !i.pull_request && (i.assignees ?? []).some((a) => COPILOT_LOGINS.has((a.login ?? '').toLowerCase())),
+            );
+
+            // Copilot PRs (branches always start with copilot/)
+            const pulls = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'all', per_page: 100,
+            });
+            const copilotPulls = pulls.filter((p) => p.head.ref.startsWith('copilot/'));
+
+            // M2: a Copilot PR merged
+            const m2 = copilotPulls.some((p) => p.merged_at);
+
+            // M3: you left review feedback mentioning @copilot on a Copilot PR
+            let m3 = false;
+            for (const pr of copilotPulls.slice(0, 10)) {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner, repo, issue_number: pr.number, per_page: 100,
+              });
+              if (comments.some((c) => c.user?.login !== `${COPILOT_BOT}[bot]` && /@copilot\b/i.test(c.body ?? ''))) {
+                m3 = true;
+                break;
+              }
+            }
+
+            // M4: a code-scanning alert fixed (Module 04)
+            let m4 = false;
+            try {
+              const alerts = await github.paginate(github.rest.codeScanning.listAlertsForRepo, {
+                owner, repo, state: 'fixed', per_page: 10,
+              });
+              m4 = alerts.length > 0;
+            } catch { m4 = false; }
+
+            // M5: you authored your own custom agent (Module 05)
+            let m5 = false;
+            try {
+              const agentsDir = await github.rest.repos.getContent({ owner, repo, path: '.github/agents' });
+              const files = Array.isArray(agentsDir.data) ? agentsDir.data : [];
+              m5 = files.some((f) => f.name.endsWith('.md') && f.name !== 'test-engineer.md');
+            } catch { m5 = false; }
+
+            // M6: capstone retro written
+            let m6 = false;
+            try {
+              await github.rest.repos.getContent({ owner, repo, path: 'RETRO.md' });
+              m6 = true;
+            } catch { m6 = false; }
+
+            // --- render the scorecard ---------------------------------------------------
+
+            const milestones = [
+              { done: m1, label: 'Delegated your first issue to Copilot', module: '02' },
+              { done: m2, label: 'Merged an AI-authored pull request', module: '02' },
+              { done: m3, label: 'Made Copilot iterate on your review feedback', module: '02/03' },
+              { done: m4, label: 'Fixed a real vulnerability with CodeQL + Copilot Autofix', module: '04' },
+              { done: m5, label: 'Authored your own custom specialist agent', module: '05' },
+              { done: m6, label: 'Completed the capstone retro', module: '🏆' },
+            ];
+            const score = milestones.filter((m) => m.done).length;
+
+            const bar = '▓'.repeat(score) + '░'.repeat(6 - score);
+            const rows = milestones
+              .map((m) => `| ${m.done ? '✅' : '⬜'} | ${m.label} | Module ${m.module} |`)
+              .join('\n');
+
+            let body = `<!-- workshop-progress-bot — do not edit this issue body manually -->\n\n`;
+            body += `## Progress: ${bar} ${score}/6\n\n`;
+            body += `This scorecard updates automatically every time you delegate, review, merge, or fix something. Keep going. 🥭\n\n`;
+            body += `| | Milestone | Where |\n|---|---|---|\n${rows}\n\n`;
+
+            if (score === 6) {
+              // Generate a personalized, downloadable certificate into the repo by
+              // filling the template at assets/certificate-template.svg.
+              const fullName = (await github.rest.users.getByUsername({ username: owner })).data.name || owner;
+              const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+              const repoUrl = `https://github.com/${owner}/${repo}`;
+              const CERT_PATH = 'CERTIFICATE.svg';
+              const tmpl = await github.rest.repos.getContent({ owner, repo, path: 'assets/certificate-template.svg' });
+              const svg = Buffer.from(tmpl.data.content, 'base64').toString('utf8')
+                .split('{{NAME}}').join(fullName)
+                .split('{{REPO}}').join(`github.com/${owner}/${repo}`)
+                .split('{{DATE}}').join(date);
+              let certSha;
+              try {
+                const existing = await github.rest.repos.getContent({ owner, repo, path: CERT_PATH });
+                certSha = existing.data.sha;
+              } catch { /* not present yet */ }
+              await github.rest.repos.createOrUpdateFileContents({
+                owner, repo, path: CERT_PATH,
+                message: '🎓 Award AI Teammate 101 certificate',
+                content: Buffer.from(svg).toString('base64'),
+                ...(certSha ? { sha: certSha } : {}),
+              });
+              const certRaw = `https://raw.githubusercontent.com/${owner}/${repo}/main/${CERT_PATH}`;
+              const certBlob = `${repoUrl}/blob/main/${CERT_PATH}`;
+
+              body += `---\n\n## 🎓 Certificate unlocked\n\n`;
+              body += `[![Your AI Teammate 101 certificate](${certRaw})](${certBlob})\n\n`;
+              body += `This is your real certificate — [download or share it](${certBlob}). It was generated and committed to this repo automatically when you hit 6/6.\n\n`;
+              body += `You delegated, reviewed, iterated, and secured — the full loop. Every milestone above is backed by a real issue, PR, or alert **in this repository**.\n\n`;
+              body += `**Share it:** post the certificate image with \`#AITeammate101\`.\n\n`;
+              body += `**Don't stop here:** [AI Architect 201](https://github.com/JonEricEubanks/ai-architect-201) — multi-agent orchestration, MCP servers, and governance. Coming soon.\n`;
+            } else {
+              body += `> Next milestone not checked off? Re-run this workflow from the **Actions** tab after completing it.\n`;
+            }
+
+            // --- upsert the tracking issue ----------------------------------------------
+
+            const open = await github.paginate(github.rest.issues.listForRepo, {
+              owner, repo, state: 'open', per_page: 100,
+            });
+            const tracking = open.find((i) => i.title === TRACK_TITLE && !i.pull_request);
+
+            if (tracking) {
+              // Update when the bar changed OR the cert embed line is missing/stale
+              // (so a 6/6 scorecard gains the certificate embed after an upgrade).
+              const barChanged = !tracking.body?.includes(`Progress: ${bar} ${score}/6`);
+              const certStale = score === 6 && !tracking.body?.includes('This is your real certificate');
+              if (barChanged || certStale) {
+                await github.rest.issues.update({ owner, repo, issue_number: tracking.number, body });
+              }
+            } else {
+              await github.rest.issues.create({
+                owner, repo, title: TRACK_TITLE, body,
+                labels: [],
+              });
+            }
+
+            core.info(`Progress: ${score}/6 — scorecard ${tracking ? 'updated' : 'created'}.`);
