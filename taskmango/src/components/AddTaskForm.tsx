@@ -9,8 +9,13 @@ export function AddTaskForm({ onAdd }: Props) {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    // NOTE: seeded issue #3 — empty/whitespace-only tasks are accepted.
-    onAdd(text);
+
+    const trimmedText = text.trim();
+    if (!trimmedText) {
+      return;
+    }
+
+    onAdd(trimmedText);
     setText('');
   };
 
