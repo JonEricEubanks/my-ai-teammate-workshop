@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import type { Task } from '../types';
 import { getTaskCounts, TaskFilter } from './TaskFilter';
@@ -28,5 +29,22 @@ describe('TaskFilter', () => {
     expect(screen.getByRole('button', { name: 'All (3)' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Active (2)' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Completed (1)' })).toBeInTheDocument();
+  });
+
+  it('calls onChange with the selected filter when a button is clicked', async () => {
+    const onChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <TaskFilter
+        current="all"
+        onChange={onChange}
+        counts={{ all: 3, active: 2, completed: 1 }}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Completed (1)' }));
+
+    expect(onChange).toHaveBeenCalledWith('completed');
   });
 });
