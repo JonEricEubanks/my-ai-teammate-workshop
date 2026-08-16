@@ -22,16 +22,18 @@ describe('AddTaskForm', () => {
     expect(input).toHaveValue('');
   });
 
-  it('does not call onAdd for empty or whitespace-only input', async () => {
+  it.each(['', '   '])('does not call onAdd for %p input', async (value) => {
     const onAdd = vi.fn();
     render(<AddTaskForm onAdd={onAdd} />);
 
     const input = screen.getByLabelText(/new task/i);
-    await userEvent.type(input, '   ');
+    if (value) {
+      await userEvent.type(input, value);
+    }
     await userEvent.click(screen.getByRole('button', { name: /add/i }));
 
     expect(onAdd).not.toHaveBeenCalled();
-    expect(input).toHaveValue('   ');
+    expect(input).toHaveValue(value);
   });
 });
 
