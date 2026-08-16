@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import type { Filter, Task } from './types';
 import { loadTasks, saveTasks } from './storage';
 import { AddTaskForm } from './components/AddTaskForm';
-import { TaskFilter } from './components/TaskFilter';
+import { TaskFilter, getTaskCounts } from './components/TaskFilter';
 import { TaskList } from './components/TaskList';
 import { maybeCelebrate } from './mangoRain';
-import { getTaskCounts } from './components/TaskFilter';
 
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>(loadTasks);
