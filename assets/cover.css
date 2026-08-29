@@ -1,0 +1,111 @@
+/* ============================================================
+   Cover — animated hero (Stripe/Apple-grade)
+   ============================================================ */
+
+section.cover {
+  background: radial-gradient(120% 120% at 20% 0%, #10443d 0%, #062421 55%, #041a17 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+/* animated aurora layer */
+section.cover::before {
+  content: '';
+  position: absolute; inset: -30%;
+  background:
+    radial-gradient(closest-side, rgba(255,159,28,0.16), transparent 60%) 18% 30% / 55% 55% no-repeat,
+    radial-gradient(closest-side, rgba(85,216,199,0.26), transparent 60%) 82% 24% / 50% 50% no-repeat,
+    radial-gradient(closest-side, rgba(31,174,156,0.18), transparent 60%) 70% 82% / 60% 60% no-repeat;
+  animation: aurora 16s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes aurora {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.08); }
+}
+/* subtle grid texture */
+section.cover::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  pointer-events: none;
+}
+
+section.cover .cover-main { position: relative; z-index: 1; max-width: 42rem; margin: 0 auto; }
+
+/* hide Docsify's default h1 blockquote rendering (we supply our own) */
+section.cover .cover-main > h1:first-child,
+section.cover .cover-main > blockquote:first-of-type { display: none; }
+
+/* ---------- hero ---------- */
+.hero { text-align: center; animation: heroIn .9s var(--ease-out, cubic-bezier(.22,1,.36,1)) both; }
+@keyframes heroIn { from { opacity: 0; transform: translateY(26px) } to { opacity: 1; transform: none } }
+
+.hero-logo {
+  width: 88px; height: 88px; margin-bottom: 1.1rem;
+  filter: drop-shadow(0 6px 22px rgba(255,159,28,0.45));
+  animation: bob 3.4s ease-in-out infinite;
+}
+@keyframes bob { 0%,100%{ transform: translateY(0) rotate(0) } 50%{ transform: translateY(-9px) rotate(-6deg) } }
+.hero-ring {
+  fill: none; stroke: #ff9f1c; stroke-width: 1.5; opacity: 0;
+  transform-origin: center; transform-box: fill-box;
+  animation: ring 3s ease-out infinite;
+}
+.hero-ring.r2 { animation-delay: 1.5s; }
+@keyframes ring { 0%{ opacity:.8; transform: scale(.55) } 100%{ opacity:0; transform: scale(1.4) } }
+
+section.cover .hero-title {
+  font-size: 3.6rem !important; font-weight: 800 !important; letter-spacing: -0.03em; line-height: 1.05;
+  color: #fff !important; margin: 0 0 .4rem;
+}
+section.cover .hero-title .grad {
+  background: linear-gradient(90deg, #ffb347, #ff7b1c);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+section.cover .hero-tagline {
+  font-size: 1.5rem; font-weight: 600; color: #ffd9a0 !important; margin: 0 0 .9rem;
+}
+section.cover .hero-sub {
+  font-size: 1.06rem; line-height: 1.7; color: #c2eae2 !important;
+  max-width: 34rem; margin: 0 auto 1.6rem;
+}
+section.cover .hero-sub strong { color: #ffd9a0 !important; font-weight: 650; }
+
+section.cover .hero-points {
+  list-style: none; padding: 0; margin: 0 0 2rem;
+  display: inline-flex; flex-direction: column; gap: .55rem; text-align: left;
+}
+section.cover .hero-points li {
+  display: flex; align-items: center; gap: .6rem;
+  color: #c2eae2 !important; font-size: 1rem; font-weight: 500;
+}
+section.cover .hero-points .ti { color: #ff9f1c; width: 1.2em; height: 1.2em; }
+
+/* ---------- CTA buttons ---------- */
+.hero-cta { display: flex; gap: .9rem; justify-content: center; }
+section.cover .btn {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .8em 1.9em; border-radius: 999px;
+  font-weight: 650; font-size: 1.02rem; text-decoration: none;
+  transition: transform .2s var(--ease-out), box-shadow .25s var(--ease-out);
+}
+section.cover .btn .ti { width: 1.15em; height: 1.15em; }
+section.cover .btn-ghost {
+  color: #fff !important; border: 1.5px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.06); backdrop-filter: blur(6px);
+}
+section.cover .btn-ghost:hover { transform: translateY(-3px); background: rgba(255,255,255,0.12); text-decoration: none; color: #fff !important; }
+section.cover .btn-primary {
+  color: #241300 !important; background: linear-gradient(90deg, #ffb347, #ff7b1c);
+  box-shadow: 0 6px 26px rgba(255,123,28,0.45);
+}
+section.cover .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 34px rgba(255,123,28,0.6); text-decoration: none; color: #241300 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  section.cover::before, .hero, .hero-logo, .hero-ring { animation: none !important; }
+}

@@ -1,0 +1,103 @@
+/* ============================================================
+   Sidebar — redesigned for contrast & polish.
+   Deep teal surface, bright aqua link color, mango active pill.
+   ============================================================ */
+
+.sidebar {
+  background: linear-gradient(200deg, var(--deep-950) 0%, var(--deep-900) 55%, var(--deep-800) 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+}
+
+/* brand / logo */
+.sidebar h1 {
+  padding: 1.1rem 1rem 0.4rem;
+}
+.sidebar h1 .app-name-link,
+.sidebar h1 a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #fff !important;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-size: 1.25rem;
+}
+.sidebar h1 a .ti { color: var(--mango); }
+
+/* search */
+.search { padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.search input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #fff;
+  transition: border-color 0.2s, background 0.2s;
+}
+.search input::placeholder { color: #7fa89f; }
+.search input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--mango);
+  outline: none;
+}
+
+/* nav links — high contrast */
+.sidebar-nav { padding: 0.6rem 0 2rem; }
+.sidebar ul { list-style: none; }
+.sidebar ul li { margin: 1px 0; }
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #c2eae2;               /* bright enough against deep teal */
+  font-size: 0.94rem;
+  font-weight: 500;
+  padding: 0.42rem 1rem;
+  margin: 0 0.5rem;
+  border-radius: 9px;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+.sidebar ul li a .ti {
+  color: #8cc4ba;
+  width: 1.25em;      /* larger so thin-stroke icons (network/map/grad) read clearly */
+  height: 1.25em;
+  stroke-width: 2.4;  /* slightly bolder so they match the solid ones */
+  flex: none;
+  transition: color 0.16s ease;
+}
+
+.sidebar ul li a:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+.sidebar ul li a:hover .ti { color: var(--mango); }
+
+/* active = mango pill */
+.sidebar ul li.active > a {
+  background: linear-gradient(90deg, rgba(255, 159, 28, 0.18), rgba(255, 123, 28, 0.08));
+  color: #ffcf8a;
+  font-weight: 650;
+  box-shadow: inset 2px 0 0 var(--mango);
+}
+.sidebar ul li.active > a .ti { color: var(--mango); }
+
+/* section headers ("Get Started", "Modules", ...) */
+.sidebar ul > li > p,
+.sidebar .sidebar-nav > ul > li > span {
+  display: block;
+  color: #6f9a91;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 1rem 1.5rem 0.25rem;
+}
+
+/* collapse toggle */
+.sidebar-toggle { background: var(--deep-900); }
+.sidebar-toggle span { background: var(--mango); }
+
+/* search results */
+.search .matching-post { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.search .matching-post a { color: #d9f4ee; }

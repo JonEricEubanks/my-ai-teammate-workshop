@@ -1,0 +1,406 @@
+/* ============================================================
+   AI Teammate 101 — Design System
+   A Stripe/Apple-grade visual language: refined type scale,
+   generous whitespace, layered surfaces, signature gradient,
+   and a hand-crafted SVG icon set (no emoji-font reliance).
+   ============================================================ */
+
+:root {
+  /* --- brand palette --- */
+  --mango: #ff9f1c;
+  --mango-deep: #ff7b1c;
+  --mango-soft: #ffb347;
+  --teal: #55d8c7;
+  --teal-bright: #8ef0e0;
+  --teal-deep: #1fae9c;
+  --deep-950: #062421;
+  --deep-900: #0a332e;
+  --deep-800: #10443d;
+  --deep-700: #17594f;
+  --ink: #17262b;
+  --ink-soft: #4f6066;
+  --cream: #f6faf8;
+  --surface: #ffffff;
+  --line: #e1eae7;
+
+  /* --- semantic --- */
+  --bg: var(--cream);
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+  --accent: var(--mango-deep);
+  --border: var(--line);
+
+  /* --- type scale (1.25 ratio) --- */
+  --fs-xs: 0.8rem;
+  --fs-sm: 0.92rem;
+  --fs-base: 1.02rem;
+  --fs-lg: 1.28rem;
+  --fs-xl: 1.6rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.5rem;
+
+  /* --- spacing --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+
+  /* --- radii & shadow --- */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(6, 36, 33, 0.06);
+  --shadow-md: 0 4px 20px rgba(6, 36, 33, 0.09);
+  --shadow-lg: 0 12px 40px rgba(6, 36, 33, 0.14);
+
+  --mono: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* --- motion --- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- base ---------- */
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.markdown-section {
+  max-width: 46rem;
+  font-size: var(--fs-base);
+  line-height: 1.75;
+}
+
+/* ---------- icon system ---------- */
+/* Inline SVG icons inherit currentColor and size from font-size. */
+.ti {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.18em;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+.ti-lg { width: 1.5em; height: 1.5em; }
+
+/* ---------- links ---------- */
+.markdown-section a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 550;
+  background: linear-gradient(currentColor, currentColor) bottom left / 0% 1.5px no-repeat;
+  transition: background-size 0.25s var(--ease-out);
+  padding-bottom: 1px;
+}
+.markdown-section a:hover {
+  background-size: 100% 1.5px;
+}
+
+/* ---------- headers ---------- */
+.markdown-section h1 {
+  font-size: var(--fs-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0 0 var(--sp-4);
+}
+.markdown-section h2 {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: var(--sp-12) 0 var(--sp-4);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--border);
+}
+.markdown-section h3 {
+  font-size: var(--fs-lg);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: var(--sp-8) 0 var(--sp-3);
+}
+
+/* ---------- tables → elevated cards ---------- */
+.markdown-section table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  margin: var(--sp-6) 0;
+}
+.markdown-section th {
+  background: var(--deep-800);
+  color: #e6faf5;
+  font-weight: 600;
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  letter-spacing: 0.01em;
+}
+.markdown-section td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.markdown-section tr:last-child td { border-bottom: none; }
+.markdown-section tr:nth-child(even) td { background: #f3f8f6; }
+.markdown-section tr:hover td { background: #e9f7f3; transition: background 0.15s ease; }
+
+/* ---------- blockquotes → callouts ---------- */
+.markdown-section blockquote {
+  margin: var(--sp-6) 0;
+  padding: var(--sp-4) var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--mango);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+}
+.markdown-section blockquote p { margin: var(--sp-2) 0; }
+
+/* ---------- code ---------- */
+.markdown-section code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: #e3f6f1;
+  color: #0c7a6b;
+  border-radius: 6px;
+  padding: 0.15em 0.4em;
+  border: 1px solid #c4eae2;
+}
+.markdown-section pre {
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid #0a2f2a;
+  margin: var(--sp-6) 0;
+}
+.markdown-section pre > code {
+  background: var(--deep-950);
+  color: #d6f4ee;
+  padding: var(--sp-4) var(--sp-6);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border: none;
+}
+
+/* ---------- lists ---------- */
+.markdown-section ul, .markdown-section ol { padding-left: 1.4em; }
+.markdown-section li { margin: var(--sp-2) 0; }
+.markdown-section .task-list-item { list-style: none; }
+.markdown-section .task-list-item input[type='checkbox'] {
+  accent-color: var(--mango);
+  width: 1.05em;
+  height: 1.05em;
+  margin-right: 0.5em;
+  vertical-align: -0.15em;
+}
+
+/* ---------- details / summary ---------- */
+.markdown-section details {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-4);
+  margin: var(--sp-4) 0;
+  box-shadow: var(--shadow-sm);
+}
+.markdown-section summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ---------- content entrance ---------- */
+.markdown-section { animation: rise 0.5s var(--ease-out); }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- diagrams & images ---------- */
+.mermaid-diagram svg, .markdown-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-md);
+}
+
+/* small inline icon used in feature bullet lists (img referencing sprite) */
+.badge-icon {
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+  border-radius: 0;
+  display: inline-block;
+}
+
+/* inline <svg class="ti"> icons inside markdown bullets get the brand color */
+.markdown-section li > svg.ti {
+  color: var(--mango-deep);
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.22em;
+  margin-right: 0.4em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-section { animation: none; }
+}
+
+/* ---- Inline "what you'll see" screenshots ---------------------------- */
+/* Collapsible reveal: hidden until the learner clicks the summary line. */
+.markdown-section details.shot {
+  margin: 0.6rem 0 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel, #fbfdfc);
+  overflow: hidden;
+}
+.markdown-section details.shot > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--teal, #1fae9c);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  user-select: none;
+}
+.markdown-section details.shot > summary::-webkit-details-marker { display: none; }
+/* leading "preview" icon: an eye, as an inline SVG (no emoji font reliance) */
+.markdown-section details.shot > summary::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.6"/></svg>') center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.6"/></svg>') center / contain no-repeat;
+}
+/* trailing chevron that rotates when open (SVG, not a unicode glyph) */
+.markdown-section details.shot > summary::after {
+  content: "";
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: auto;
+  flex: 0 0 auto;
+  background: var(--muted, #6b7f88);
+  transition: transform 0.18s ease;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>') center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>') center / contain no-repeat;
+}
+.markdown-section details.shot[open] > summary::after { transform: rotate(90deg); }
+.markdown-section details.shot > summary:hover { background: rgba(31, 174, 156, 0.07); }
+.markdown-section details.shot img.shot {
+  display: block;
+  width: 100%;
+  border-top: 1px solid var(--border);
+  cursor: zoom-in;
+}
+
+/* ---- Collapsible "deep dive" panels -------------------------------- */
+/* Optional theory/context the learner can skip: same design language as
+   details.shot, but amber-accented with a book icon, and holding rich
+   markdown content instead of a screenshot. */
+.markdown-section details.dive {
+  margin: 0.6rem 0 1rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--mango-deep, #ff7b1c);
+  border-radius: 10px;
+  background: var(--panel, #fbfdfc);
+  overflow: hidden;
+}
+.markdown-section details.dive > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--mango-deep, #ff7b1c);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  user-select: none;
+}
+.markdown-section details.dive > summary::-webkit-details-marker { display: none; }
+/* leading "book" icon as an inline SVG mask (no emoji font reliance) */
+.markdown-section details.dive > summary::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>') center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>') center / contain no-repeat;
+}
+/* trailing chevron that rotates when open */
+.markdown-section details.dive > summary::after {
+  content: "";
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: auto;
+  flex: 0 0 auto;
+  background: var(--muted, #6b7f88);
+  transition: transform 0.18s ease;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>') center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>') center / contain no-repeat;
+}
+.markdown-section details.dive[open] > summary::after { transform: rotate(90deg); }
+.markdown-section details.dive > summary:hover { background: rgba(255, 123, 28, 0.07); }
+/* inner padding for the revealed markdown content */
+.markdown-section details.dive > *:not(summary) {
+  margin-left: 0.9rem;
+  margin-right: 0.9rem;
+}
+.markdown-section details.dive > summary + * { margin-top: 0.6rem; }
+.markdown-section details.dive > *:last-child { margin-bottom: 0.8rem; }
+
+/* Lightbox overlay for enlarging any img.shot */
+#shot-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 22, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease;
+  cursor: zoom-out;
+}
+#shot-lightbox.open { opacity: 1; visibility: visible; }
+#shot-lightbox img {
+  max-width: 94vw;
+  max-height: 84vh;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+#shot-lightbox p {
+  color: #cfe3de;
+  font-size: 0.8rem;
+  margin-top: 0.9rem;
+  letter-spacing: 0.02em;
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#062421"/>
+      <stop offset="0.55" stop-color="#10443d"/>
+      <stop offset="1" stop-color="#17594f"/>
+    </linearGradient>
+    <linearGradient id="mango" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb347"/>
+      <stop offset="1" stop-color="#ff7b1c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- decorative mangoes -->
+  <text x="980" y="140" font-size="90" opacity="0.35" transform="rotate(15 980 140)">🥭</text>
+  <text x="1050" y="500" font-size="130" opacity="0.5" transform="rotate(-12 1050 500)">🥭</text>
+  <text x="120" y="540" font-size="70" opacity="0.25" transform="rotate(20 120 540)">🥭</text>
+
+  <!-- code bracket motif -->
+  <text x="90" y="180" font-family="Consolas, monospace" font-size="110" fill="#ff9f1c" opacity="0.9">&lt;/&gt;</text>
+
+  <!-- title -->
+  <text x="90" y="330" font-family="Segoe UI, Arial, sans-serif" font-weight="800" font-size="92" fill="#ffffff">AI Teammate 101</text>
+  <text x="94" y="405" font-family="Segoe UI, Arial, sans-serif" font-weight="600" font-size="46" fill="url(#mango)">Delegate Like a Tech Lead</text>
+
+  <!-- subtitle -->
+  <text x="94" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#bfe9e1">The hands-on workshop for GitHub Copilot's Coding Agent.</text>
+  <text x="94" y="512" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#bfe9e1">You write the issue. AI ships the PR. You stay the boss.</text>
+
+  <!-- footer badge strip -->
+  <rect x="90" y="548" width="470" height="44" rx="22" fill="#ffffff" opacity="0.12"/>
+  <text x="114" y="578" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#ffd9a0">6 modules · auto-graded certificate · GH-600 aligned</text>
+</svg>
