@@ -21,6 +21,19 @@ describe('AddTaskForm', () => {
     expect(onAdd).toHaveBeenCalledWith('Buy mangoes');
     expect(input).toHaveValue('');
   });
+
+  it.each(['', '   '])('does not add an empty task', async (text) => {
+    const onAdd = vi.fn();
+    const user = userEvent.setup();
+    render(<AddTaskForm onAdd={onAdd} />);
+
+    if (text) {
+      await user.type(screen.getByLabelText(/new task/i), text);
+    }
+    await user.click(screen.getByRole('button', { name: /add/i }));
+
+    expect(onAdd).not.toHaveBeenCalled();
+  });
 });
 
 // Note: TaskFilter.tsx and TaskList.tsx intentionally have no tests —
