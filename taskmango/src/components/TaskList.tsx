@@ -4,7 +4,7 @@ import { TaskItem } from './TaskItem';
 interface Props {
   tasks: Task[];
   onToggle: (id: number) => void;
-  onDelete: (visibleIndex: number) => void;
+  onDelete: (id: number) => void;
 }
 
 export function TaskList({ tasks, onToggle, onDelete }: Props) {
@@ -14,12 +14,12 @@ export function TaskList({ tasks, onToggle, onDelete }: Props) {
 
   return (
     <ul className="task-list">
-      {tasks.map((task, index) => (
+      {tasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
           onToggle={() => onToggle(task.id)}
-          onDelete={() => onDelete(index)}
+          onDelete={() => onDelete(task.id)}
         />
       ))}
     </ul>
