@@ -3,6 +3,7 @@ import type { Filter } from '../types';
 interface Props {
   current: Filter;
   onChange: (filter: Filter) => void;
+  counts: Record<Filter, number>;
 }
 
 const FILTERS: { value: Filter; label: string }[] = [
@@ -11,7 +12,7 @@ const FILTERS: { value: Filter; label: string }[] = [
   { value: 'completed', label: 'Completed' },
 ];
 
-export function TaskFilter({ current, onChange }: Props) {
+export function TaskFilter({ current, onChange, counts }: Props) {
   return (
     <nav className="filter-bar" aria-label="Task filters">
       {FILTERS.map((f) => (
@@ -20,7 +21,7 @@ export function TaskFilter({ current, onChange }: Props) {
           className={current === f.value ? 'active' : ''}
           onClick={() => onChange(f.value)}
         >
-          {f.label}
+          {f.label} ({counts[f.value]})
         </button>
       ))}
     </nav>
