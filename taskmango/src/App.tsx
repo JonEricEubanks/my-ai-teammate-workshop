@@ -40,6 +40,10 @@ export default function App() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const clearCompleted = () => {
+    setTasks((currentTasks) => currentTasks.filter((task) => !task.done));
+  };
+
   const visibleTasks = tasks.filter((t) =>
     filter === 'all' ? true : filter === 'active' ? !t.done : t.done,
   );
@@ -71,6 +75,11 @@ export default function App() {
       </div>
       <AddTaskForm onAdd={addTask} />
       <TaskFilter current={filter} onChange={setFilter} counts={counts} />
+      {counts.completed > 0 && (
+        <button type="button" onClick={clearCompleted}>
+          Clear completed
+        </button>
+      )}
       <TaskList tasks={visibleTasks} onToggle={toggleTask} onDelete={deleteTask} />
     </main>
   );
