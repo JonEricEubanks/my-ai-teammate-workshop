@@ -139,6 +139,17 @@ body {
   transform: translateY(0) scale(0.97);
 }
 
+.clear-completed {
+  margin-bottom: 1.25rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #e0c9a6;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.65);
+  color: #a0764a;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
 /* ---------- filter bar ---------- */
 .filter-bar {
   display: flex;
