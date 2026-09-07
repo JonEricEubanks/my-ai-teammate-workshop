@@ -229,6 +229,21 @@ body {
   transition: color 0.25s ease;
 }
 
+.task-item.overdue {
+  border-color: #c0392b;
+  background: #fdecea;
+}
+
+.due-date {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.task-item.overdue .due-date {
+  color: #c0392b;
+  font-weight: 600;
+}
+
 .task-item label {
   display: flex;
   align-items: center;
@@ -332,6 +347,11 @@ body.dark-mode .task-item {
 
 body.dark-mode .task-item.done span {
   color: #a8afbf;
+}
+
+body.dark-mode .task-item.overdue {
+  border-color: #e57373;
+  background: rgba(192, 57, 43, 0.2);
 }
 
 body.dark-mode .task-item .delete:hover {
