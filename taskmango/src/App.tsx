@@ -76,7 +76,7 @@ export default function App() {
       <AddTaskForm onAdd={addTask} />
       <TaskFilter current={filter} onChange={setFilter} counts={counts} />
       {counts.completed > 0 && (
-        <button type="button" onClick={clearCompleted}>
+        <button className="clear-completed" type="button" onClick={clearCompleted}>
           Clear completed
         </button>
       )}
