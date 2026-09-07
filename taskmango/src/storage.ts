@@ -13,7 +13,12 @@ export function loadTasks(): Task[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return SEED_TASKS;
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : SEED_TASKS;
+    return Array.isArray(parsed)
+      ? parsed.map((task) => ({
+          ...task,
+          dueDate: typeof task.dueDate === 'string' ? task.dueDate : undefined,
+        }))
+      : SEED_TASKS;
   } catch {
     return SEED_TASKS;
   }

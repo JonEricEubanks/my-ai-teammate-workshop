@@ -22,6 +22,19 @@ describe('AddTaskForm', () => {
     expect(input).toHaveValue('');
   });
 
+  it('includes and clears the optional due date', async () => {
+    const onAdd = vi.fn();
+    const user = userEvent.setup();
+    render(<AddTaskForm onAdd={onAdd} />);
+
+    await user.type(screen.getByLabelText(/new task/i), 'Buy mangoes');
+    await user.type(screen.getByLabelText(/due date/i), '2026-09-10');
+    await user.click(screen.getByRole('button', { name: /add/i }));
+
+    expect(onAdd).toHaveBeenCalledWith('Buy mangoes', '2026-09-10');
+    expect(screen.getByLabelText(/due date/i)).toHaveValue('');
+  });
+
   it.each(['', '   '])('does not add an empty task', async (text) => {
     const onAdd = vi.fn();
     const user = userEvent.setup();

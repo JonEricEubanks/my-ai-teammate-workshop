@@ -106,4 +106,35 @@ describe('App', () => {
     );
     expect(document.body).toHaveClass('dark-mode');
   });
+
+  it('preserves tasks without due dates and highlights overdue tasks', () => {
+    localStorage.setItem(
+      'taskmango.tasks',
+      JSON.stringify([
+        { id: 1, text: 'No due date', done: false },
+        { id: 2, text: 'Past due', done: false, dueDate: '2000-01-01' },
+      ]),
+    );
+
+    render(<App />);
+
+    expect(screen.getByText('No due date')).toBeInTheDocument();
+    expect(screen.getByText('Past due').closest('li')).toHaveClass('overdue');
+    expect(screen.getByText('Due: 2000-01-01')).toBeInTheDocument();
+  });
+
+  it('persists the optional due date when adding a task', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.type(screen.getByLabelText('New task'), 'Schedule review');
+    await user.type(screen.getByLabelText('Due date'), '2026-09-10');
+    await user.click(screen.getByRole('button', { name: 'Add' }));
+
+    expect(JSON.parse(localStorage.getItem('taskmango.tasks')!)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ text: 'Schedule review', dueDate: '2026-09-10' }),
+      ]),
+    );
+  });
 });

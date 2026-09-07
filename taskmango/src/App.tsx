@@ -28,8 +28,8 @@ export default function App() {
     localStorage.setItem(THEME_STORAGE_KEY, isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
-  const addTask = (text: string) => {
-    setTasks([...tasks, { id: Date.now(), text, done: false }]);
+  const addTask = (text: string, dueDate?: string) => {
+    setTasks([...tasks, { id: Date.now(), text, done: false, dueDate }]);
   };
 
   const toggleTask = (id: number) => {
