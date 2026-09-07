@@ -52,5 +52,5 @@
   <!-- footer: repo (left) + date (right) on their own line -->
   <rect x="120" y="742" width="960" height="1.5" fill="#1fae9c" opacity="0.4"/>
   <text x="120" y="778" font-family="Consolas, monospace" font-size="21" fill="#ffd9a0">github.com/JonEricEubanks/my-ai-teammate-workshop</text>
-  <text x="1080" y="778" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#bfe9e1">August 30, 2026</text>
+  <text x="1080" y="778" text-anchor="end" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#bfe9e1">September 7, 2026</text>
 </svg>
